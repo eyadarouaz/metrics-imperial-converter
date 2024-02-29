@@ -4,14 +4,18 @@ function ConvertHandler() {
 
   this.getNum = function (input) {
 
-    let result = input.split(/[a-zA-Z]/).join('');
+    let result = input.split(/[a-zA-Z]/).join(''); // Extract number from input
 
-    if (result.replace(/[^\/]/g, '').length >= 2) {
+    if (result.replace(/[^\/]/g, '').length >= 2) { // Number uses more than 1 "/"
       return 'invalid number'
     }
-    else if (result.replace(/[^\/.]/g, '').length >= 2) {
-      const arr = result.split('/')
-      return parseFloat(parseFloat(arr[0]) / parseFloat(arr[1]))
+    else if (result.replace(/[^\/.]/g, '').length >= 2) { // Float numbers
+      if(!result.replace(/[^\/.]/g, '').match(/^(?:\.|\.\/|\.\/\.|\/\.|\/|)$/g)) { 
+        return 'invalid number'
+      }else {
+        const arr = result.split('/')
+        return parseFloat(parseFloat(arr[0]) / parseFloat(arr[1]))
+      }
     }
     else if (result.replace(/[^\/]/g, '').length === 1) {
       const arr = result.split('/')
@@ -28,7 +32,7 @@ function ConvertHandler() {
 
   this.getUnit = function (input) {
 
-    let unit = input.match(/[^\.\d\/]/g).join('')
+    let unit = input.match(/[^\.\d\/]/g)?.join('')
 
     for (let i = 0; i < units.length; i++) {
       if (units[i] === unit) {
